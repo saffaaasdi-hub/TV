@@ -1,0 +1,8 @@
+{
+  "name": "Remix تطبيق القنوات الرياضية - منصة صفاء الأسدي",
+  "description": "تطبيق متكامل لمشاهدة القنوات الرياضية والبث المباشر بتقنية HLS مع جدول المباريات وإدارة القنوات والسيرفرات",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

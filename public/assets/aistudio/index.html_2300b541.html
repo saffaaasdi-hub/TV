@@ -1,0 +1,717 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>منصة صفاء الأسدي</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dplayer@1.26.0/dist/DPlayer.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.20/dist/hls.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dplayer@1.26.0/dist/DPlayer.min.js"></script>
+
+<style>
+:root {
+    --gold:#ffcc00;
+    --blue:#00d2ff;
+    --bg:#07090d;
+    --panel:#10151d;
+    --card:#171e28;
+    --text:#fff;
+    --muted:#8793a4;
+}
+
+* {box-sizing:border-box}
+
+body {
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:Tahoma,Arial,sans-serif;
+    height:100vh;
+    overflow:hidden;
+}
+
+.app {
+    display:flex;
+    height:100vh;
+}
+
+/* القائمة الجانبية */
+
+.sidebar {
+    width:300px;
+    background:var(--panel);
+    border-left:1px solid #26303c;
+    display:flex;
+    flex-direction:column;
+    flex-shrink:0;
+}
+
+.logo {
+    padding:24px 12px;
+    text-align:center;
+    background:linear-gradient(145deg,#18212d,#080a0e);
+    border-bottom:2px solid var(--gold);
+}
+
+.logo h1 {
+    color:var(--gold);
+    font-size:22px;
+    margin:0 0 8px;
+}
+
+.logo p {
+    color:var(--muted);
+    font-size:10px;
+    margin:0;
+    letter-spacing:1px;
+}
+
+.search {
+    padding:14px;
+}
+
+.search input {
+    width:100%;
+    padding:13px;
+    border:1px solid #303b49;
+    border-radius:9px;
+    background:#080c12;
+    color:white;
+    outline:none;
+    font-size:14px;
+}
+
+.search input:focus {
+    border-color:var(--gold);
+}
+
+.channels {
+    overflow-y:auto;
+    padding:0 12px 15px;
+    flex:1;
+}
+
+.category {
+    color:var(--gold);
+    padding:12px 10px;
+    font-size:14px;
+    font-weight:bold;
+    border-bottom:1px solid #28303b;
+    margin:10px 0;
+}
+
+.channel {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:12px;
+    margin-bottom:7px;
+    background:var(--card);
+    border:1px solid transparent;
+    border-radius:9px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.channel:hover {
+    background:#253142;
+    border-color:var(--gold);
+}
+
+.channel.active {
+    background:#342b0c;
+    border-color:var(--gold);
+}
+
+.channel-number {
+    width:33px;
+    height:33px;
+    display:grid;
+    place-items:center;
+    border-radius:7px;
+    background:#252e3b;
+    color:var(--gold);
+    font-size:12px;
+    font-weight:bold;
+}
+
+.channel-name {
+    flex:1;
+    font-size:13px;
+}
+
+.live-dot {
+    width:7px;
+    height:7px;
+    background:#555;
+    border-radius:50%;
+}
+
+.channel.active .live-dot {
+    background:#00e676;
+    box-shadow:0 0 8px #00e676;
+}
+
+/* المحتوى الرئيسي */
+
+.main {
+    flex:1;
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+}
+
+.topbar {
+    height:58px;
+    background:#10151d;
+    border-bottom:1px solid #26303c;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 20px;
+}
+
+.topbar-title {
+    color:var(--gold);
+    font-size:15px;
+    font-weight:bold;
+}
+
+.status {
+    color:#00e676;
+    font-size:12px;
+}
+
+.player-section {
+    padding:15px;
+    background:#05070a;
+}
+
+.player-frame {
+    max-width:1200px;
+    margin:auto;
+    background:#000;
+    border:1px solid #303744;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 8px 35px #000;
+}
+
+#dplayer {
+    width:100%;
+    aspect-ratio:16/9;
+    background:#000;
+}
+
+.now-playing {
+    padding:16px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    flex-wrap:wrap;
+    border-bottom:1px solid #202936;
+}
+
+.now-playing h2 {
+    font-size:17px;
+    color:var(--gold);
+    margin:0;
+}
+
+.now-playing span {
+    color:var(--muted);
+    font-size:12px;
+}
+
+/* معلومات السيرفر */
+
+.info-section {
+    flex:1;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    overflow:auto;
+}
+
+.info-title {
+    color:var(--gold);
+    font-size:19px;
+    margin-bottom:22px;
+}
+
+.info-grid {
+    width:100%;
+    max-width:850px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.info-card {
+    background:linear-gradient(145deg,#151e29,#0d1118);
+    border:1px solid #263c4d;
+    border-radius:12px;
+    padding:20px 10px;
+    text-align:center;
+}
+
+.info-card label {
+    display:block;
+    color:var(--blue);
+    font-size:11px;
+    margin-bottom:12px;
+}
+
+.info-card strong {
+    font-size:14px;
+    overflow-wrap:anywhere;
+}
+
+.copyright {
+    color:#596474;
+    font-size:11px;
+    margin-top:30px;
+    text-align:center;
+}
+
+/* الشريط الإخباري */
+
+.ticker {
+    height:40px;
+    flex-shrink:0;
+    background:#111821;
+    border-top:1px solid #303a46;
+    display:flex;
+    align-items:center;
+    overflow:hidden;
+}
+
+.ticker-label {
+    background:var(--gold);
+    color:#000;
+    padding:12px;
+    font-size:12px;
+    font-weight:bold;
+    z-index:2;
+    white-space:nowrap;
+}
+
+.ticker-track {
+    overflow:hidden;
+    flex:1;
+}
+
+.ticker-content {
+    display:inline-flex;
+    white-space:nowrap;
+    animation:scroll 30s linear infinite;
+}
+
+.ticker-content span {
+    padding:0 35px;
+    color:var(--gold);
+    font-size:12px;
+    font-weight:bold;
+}
+
+@keyframes scroll {
+    from {transform:translateX(-100%)}
+    to {transform:translateX(100%)}
+}
+
+.channels::-webkit-scrollbar {width:5px}
+.channels::-webkit-scrollbar-thumb {
+    background:var(--gold);
+    border-radius:10px;
+}
+
+/* الهاتف */
+
+@media(max-width:768px) {
+    body {
+        height:auto;
+        min-height:100vh;
+        overflow:auto;
+    }
+
+    .app {
+        height:auto;
+        min-height:100vh;
+        flex-direction:column;
+    }
+
+    .sidebar {
+        width:100%;
+        order:2;
+        border:0;
+    }
+
+    .main {
+        order:1;
+        flex:none;
+    }
+
+    .topbar {
+        height:48px;
+        padding:0 12px;
+    }
+
+    .player-section {
+        padding:8px;
+    }
+
+    .player-frame {
+        border-radius:7px;
+    }
+
+    .now-playing {
+        padding:12px;
+    }
+
+    .info-section {
+        padding:20px 12px;
+    }
+
+    .info-grid {
+        grid-template-columns:1fr;
+        gap:10px;
+    }
+
+    .info-card {
+        padding:15px;
+    }
+
+    .channels {
+        height:400px;
+        flex:none;
+    }
+
+    .logo {
+        padding:17px;
+    }
+
+    .ticker {
+        order:3;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- القائمة -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+        <h1>منصة صفاء الأسدي</h1>
+        <p>PREMIUM IPTV SERVICES</p>
+    </div>
+
+    <div class="search">
+        <input id="search" type="search"
+        placeholder="🔍 ابحث عن قناة..."
+        oninput="filterChannels()">
+    </div>
+
+    <div class="channels" id="channels"></div>
+
+</aside>
+
+<!-- الشاشة الرئيسية -->
+
+<main class="main">
+
+    <div class="topbar">
+        <div class="topbar-title">SAFAA IPTV</div>
+        <div class="status">● نظام المشاهدة</div>
+    </div>
+
+    <section class="player-section">
+        <div class="player-frame">
+            <div id="dplayer"></div>
+        </div>
+    </section>
+
+    <div class="now-playing">
+        <h2 id="p-title">يرجى اختيار قناة</h2>
+        <span id="p-status">جاهز للتشغيل</span>
+    </div>
+
+    <section class="info-section">
+
+        <div class="info-title">
+            معلومات خدمة البث
+        </div>
+
+        <div class="info-grid">
+
+            <div class="info-card">
+                <label>SERVER HOST</label>
+                <strong>http://nor.tv.com</strong>
+            </div>
+
+            <div class="info-card">
+                <label>USERNAME</label>
+                <strong>1</strong>
+            </div>
+
+            <div class="info-card">
+                <label>PASSWORD</label>
+                <strong>1</strong>
+            </div>
+
+        </div>
+
+        <div class="copyright">
+            جميع الحقوق محفوظة لمنصة صفاء الأسدي لخدمات الإنترنت
+            © 2026
+        </div>
+
+    </section>
+
+    <div class="ticker">
+
+        <div class="ticker-label">أخبار المنصة</div>
+
+        <div class="ticker-track">
+            <div class="ticker-content">
+                <span>📢 خدمات الإنترنت - سرعة فائقة وجودة مستقرة</span>
+                <span>💰 عروض واشتراكات مميزة لجميع المشتركين</span>
+                <span>🛠️ الدعم الفني متوفر لخدمتكم</span>
+                <span>⭐ منصة صفاء الأسدي - الجودة والتميز</span>
+            </div>
+        </div>
+
+    </div>
+
+</main>
+</div>
+
+<script>
+
+/* بيانات القنوات */
+
+const channelGroups = [
+{
+    category:"⚽ Alwan Sport",
+    channels:[
+        ["Alwan Sport 1","http://nor.tv.com/play/mkimVQXBx6GZ-AF2epqmaw/m3u8"],
+        ["Alwan Sport 2","http://nor.tv.com/play/m38NKOjoh_s9zFpXF2o9Ow/m3u8"],
+        ["Alwan Sport 3","http://nor.tv.com/play/MV9OJwQuY5qgq5rEzZKsNA/m3u8"],
+        ["Alwan Sport 4","http://nor.tv.com/play/rdwELstev_raiKwZkkSd_Q/m3u8"],
+        ["Alwan Sport 5","http://nor.tv.com/play/G5UZackBU0mQE_Ab5k7gsw/m3u8"],
+        ["Alwan Sport 6","http://nor.tv.com/play/BKbEsW72OB-wXrVt0s43PQ/m3u8"]
+    ]
+},
+{
+    category:"🏆 beIN SPORTS",
+    channels:[
+        ["beIN SPORTS 1","http://nor.tv.com/play/DBVAlzbOolO4cGctvtY5mw/m3u8"],
+        ["beIN SPORTS 2","http://nor.tv.com/play/nYkbektqOFI4bhpEE-3G-w/m3u8"],
+        ["beIN SPORTS 3","http://nor.tv.com/play/U2GJ4-K2o9CyvU4fqKf2Jg/m3u8"],
+        ["beIN SPORTS 4","http://nor.tv.com/play/qwm87pmoYSOnMgw_pxolzw/m3u8"],
+        ["beIN SPORTS 5","http://nor.tv.com/play/8M_0WgFBjC7sPR1Yoq2SYQ/m3u8"],
+        ["beIN SPORTS 6","http://nor.tv.com/play/CIQG37A0ThddOlddDrLAzA/m3u8"]
+    ]
+}
+];
+
+/* إنشاء القائمة */
+
+const container = document.getElementById("channels");
+
+function renderChannels(filter="") {
+
+    container.innerHTML="";
+
+    let number=0;
+
+    channelGroups.forEach(group=>{
+
+        const filtered=group.channels.filter(c=>
+            c[0].toLowerCase().includes(filter.toLowerCase())
+        );
+
+        if(!filtered.length) return;
+
+        const header=document.createElement("div");
+        header.className="category";
+        header.textContent=group.category;
+        container.appendChild(header);
+
+        filtered.forEach(channel=>{
+
+            number++;
+
+            const item=document.createElement("div");
+            item.className="channel";
+            item.dataset.url=channel[1];
+
+            const num=document.createElement("div");
+            num.className="channel-number";
+            num.textContent=String(number).padStart(2,"0");
+
+            const name=document.createElement("div");
+            name.className="channel-name";
+            name.textContent=channel[0];
+
+            const dot=document.createElement("div");
+            dot.className="live-dot";
+
+            item.append(num,name,dot);
+
+            item.onclick=()=>play(
+                channel[1],
+                channel[0],
+                item
+            );
+
+            container.appendChild(item);
+        });
+    });
+
+    if(!container.children.length) {
+        const empty=document.createElement("div");
+        empty.className="category";
+        empty.textContent="لا توجد قنوات مطابقة";
+        container.appendChild(empty);
+    }
+}
+
+function filterChannels() {
+    renderChannels(document.getElementById("search").value);
+}
+
+/* تشغيل المشغل */
+
+let hlsInstance=null;
+
+const dp = new DPlayer({
+    container:document.getElementById("dplayer"),
+    live:true,
+    autoplay:false,
+    theme:"#ffcc00",
+    preload:"none",
+    video:{
+        url:"",
+        type:"customHls",
+        customType:{
+            customHls:function(video){
+
+                if(hlsInstance) {
+                    hlsInstance.destroy();
+                    hlsInstance=null;
+                }
+
+                if(Hls.isSupported()) {
+
+                    hlsInstance=new Hls({
+                        enableWorker:true,
+                        lowLatencyMode:true
+                    });
+
+                    hlsInstance.loadSource(video.src);
+                    hlsInstance.attachMedia(video);
+
+                    hlsInstance.on(
+                        Hls.Events.ERROR,
+                        function(event,data){
+
+                            if(!data.fatal) return;
+
+                            if(data.type===Hls.ErrorTypes.NETWORK_ERROR) {
+                                document.getElementById("p-status").textContent=
+                                "تعذر الاتصال بالبث";
+                                hlsInstance.startLoad();
+                            }
+                            else if(data.type===Hls.ErrorTypes.MEDIA_ERROR) {
+                                hlsInstance.recoverMediaError();
+                            }
+                            else {
+                                hlsInstance.destroy();
+                                hlsInstance=null;
+                                document.getElementById("p-status").textContent=
+                                "تعذر تشغيل القناة";
+                            }
+                        }
+                    );
+
+                } else if(video.canPlayType("application/vnd.apple.mpegurl")) {
+
+                    video.src=video.src;
+
+                } else {
+
+                    document.getElementById("p-status").textContent=
+                    "المتصفح لا يدعم HLS";
+                }
+            }
+        }
+    }
+});
+
+/* اختيار القناة */
+
+function play(url,name,item) {
+
+    document.getElementById("p-title").textContent=
+        "يتم الآن عرض: "+name;
+
+    document.getElementById("p-status").textContent=
+        "جاري الاتصال بالبث...";
+
+    document.querySelectorAll(".channel").forEach(c=>
+        c.classList.remove("active")
+    );
+
+    item.classList.add("active");
+
+    dp.switchVideo({
+        url:url,
+        type:"customHls"
+    });
+
+    dp.play();
+
+    if(window.innerWidth<=768) {
+        window.scrollTo({
+            top:0,
+            behavior:"smooth"
+        });
+    }
+}
+
+/* رسائل المشغل */
+
+dp.on("playing",()=>{
+    document.getElementById("p-status").textContent=
+    "● البث يعمل";
+});
+
+dp.on("waiting",()=>{
+    document.getElementById("p-status").textContent=
+    "جاري تحميل البث...";
+});
+
+dp.on("error",()=>{
+    document.getElementById("p-status").textContent=
+    "حدث خطأ أثناء تشغيل القناة";
+});
+
+/* تشغيل القائمة */
+
+renderChannels();
+
+</script>
+
+</body>
+</html>
