@@ -45,25 +45,25 @@ export const Sidebar: React.FC<SidebarProps> = ({
   }, [channels, searchQuery, selectedCategory]);
 
   return (
-    <aside className="w-full lg:w-80 xl:w-96 bg-[#10151d] border-b lg:border-b-0 lg:border-l border-[#202937] flex flex-col shrink-0 h-auto lg:h-[calc(100vh-4rem-2.5rem)]">
-      {/* Search Bar */}
-      <div className="p-3.5 border-b border-[#1c2430]">
+    <aside className="order-2 lg:order-1 w-full lg:w-80 xl:w-96 bg-[#10151d] border-b lg:border-b-0 lg:border-l border-[#202937] flex flex-col shrink-0 h-auto lg:h-[calc(100vh-4rem-2.5rem)]">
+      {/* Search Bar - compact padding on mobile */}
+      <div className="p-2 sm:p-3 border-b border-[#1c2430]">
         <div className="relative">
-          <Search className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
           <input
             type="search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="ابحث عن قناة رياضية (beIN, Alwan, SSC...)"
-            className="w-full bg-[#090d14] text-gray-100 text-xs md:text-sm pr-10 pl-4 py-2.5 rounded-lg border border-[#2a3647] focus:border-[#ffcc00] focus:outline-none transition-colors placeholder:text-gray-500"
+            placeholder="ابحث عن قناة رياضية (beIN, Alwan...)"
+            className="w-full bg-[#090d14] text-gray-100 text-xs pr-8.5 pl-3 py-1.5 sm:py-2 rounded-lg border border-[#2a3647] focus:border-[#ffcc00] focus:outline-none transition-colors placeholder:text-gray-500"
           />
         </div>
 
         {/* Category Pills/Tabs */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pt-2.5 pb-0.5 no-scrollbar">
+        <div className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto pt-2 pb-0.5 no-scrollbar">
           <button
             onClick={() => setSelectedCategory('all')}
-            className={`px-2.5 py-1 text-xs font-semibold rounded-md whitespace-nowrap transition-colors ${
+            className={`px-2 py-0.5 sm:px-2.5 sm:py-1 text-[11px] sm:text-xs font-semibold rounded-md whitespace-nowrap transition-colors cursor-pointer ${
               selectedCategory === 'all'
                 ? 'bg-[#ffcc00] text-black shadow-xs'
                 : 'bg-[#18212c] text-gray-300 hover:bg-[#202c3b]'
@@ -74,7 +74,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
           <button
             onClick={() => setSelectedCategory('favorites')}
-            className={`px-2.5 py-1 text-xs font-semibold rounded-md whitespace-nowrap flex items-center gap-1 transition-colors ${
+            className={`px-2 py-0.5 sm:px-2.5 sm:py-1 text-[11px] sm:text-xs font-semibold rounded-md whitespace-nowrap flex items-center gap-1 transition-colors cursor-pointer ${
               selectedCategory === 'favorites'
                 ? 'bg-[#ffcc00] text-black shadow-xs'
                 : 'bg-[#18212c] text-gray-300 hover:bg-[#202c3b]'
@@ -88,7 +88,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-2.5 py-1 text-xs font-semibold rounded-md whitespace-nowrap transition-colors ${
+              className={`px-2 py-0.5 sm:px-2.5 sm:py-1 text-[11px] sm:text-xs font-semibold rounded-md whitespace-nowrap transition-colors cursor-pointer ${
                 selectedCategory === cat
                   ? 'bg-[#ffcc00] text-black shadow-xs'
                   : 'bg-[#18212c] text-gray-300 hover:bg-[#202c3b]'
@@ -101,18 +101,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Channel List Header */}
-      <div className="px-4 py-2 bg-[#0b0f15] border-b border-[#1b232f] flex items-center justify-between text-xs text-gray-400">
-        <span>قائمة القنوات المتاحة ({filteredChannels.length})</span>
-        <span className="text-[11px] text-[#ffcc00]">تحديث تلقائي</span>
+      <div className="px-3 sm:px-4 py-1.5 bg-[#0b0f15] border-b border-[#1b232f] flex items-center justify-between text-[11px] sm:text-xs text-gray-400">
+        <span>قائمة القنوات ({filteredChannels.length})</span>
+        <span className="text-[10px] text-[#ffcc00]">تحديث تلقائي</span>
       </div>
 
       {/* Channels Scrollable List */}
-      <div className="flex-1 overflow-y-auto p-2.5 space-y-1.5 max-h-[380px] lg:max-h-none">
+      <div className="flex-1 overflow-y-auto p-1.5 sm:p-2.5 space-y-1 sm:space-y-1.5 max-h-[280px] lg:max-h-none">
         {filteredChannels.length === 0 ? (
-          <div className="p-8 text-center text-gray-400">
-            <Radio className="w-8 h-8 mx-auto mb-2 opacity-40 text-gray-500" />
+          <div className="p-6 text-center text-gray-400">
+            <Radio className="w-6 h-6 mx-auto mb-1.5 opacity-40 text-gray-500" />
             <p className="text-xs font-semibold">لا توجد قنوات تطابق بحثك</p>
-            <p className="text-[11px] text-gray-500 mt-1">جرب البحث بكلمة أخرى أو إضافة قناة جديدة</p>
+            <p className="text-[10px] text-gray-500 mt-0.5">جرب البحث بكلمة أخرى أو إضافة قناة جديدة</p>
           </div>
         ) : (
           filteredChannels.map((channel, idx) => {
@@ -121,15 +121,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <div
                 key={channel.id}
                 onClick={() => onSelectChannel(channel)}
-                className={`group flex items-center gap-3 p-2.5 rounded-lg border transition-all cursor-pointer ${
+                className={`group flex items-center gap-2 sm:gap-2.5 p-1.5 sm:p-2 rounded-lg border transition-all cursor-pointer ${
                   isSelected
-                    ? 'bg-[#261f08] border-[#ffcc00] shadow-[0_0_15px_rgba(255,204,0,0.15)]'
+                    ? 'bg-[#261f08] border-[#ffcc00] shadow-[0_0_12px_rgba(255,204,0,0.15)]'
                     : 'bg-[#151c26] border-transparent hover:bg-[#1d2736] hover:border-[#2f3d52]'
                 }`}
               >
                 {/* Channel Number */}
                 <div
-                  className={`w-8 h-8 rounded-md flex items-center justify-center text-xs font-bold shrink-0 transition-colors ${
+                  className={`w-7 h-7 sm:w-8 sm:h-8 rounded-md flex items-center justify-center text-[11px] sm:text-xs font-bold shrink-0 transition-colors ${
                     isSelected
                       ? 'bg-[#ffcc00] text-black'
                       : 'bg-[#1f2937] text-gray-300 group-hover:text-[#ffcc00]'

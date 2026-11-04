@@ -31,21 +31,24 @@ body {
   background: #ffcc00;
 }
 
-@keyframes marquee {
+/* Marquee animation: Slow and moving from Left to Right */
+@keyframes marquee-left-to-right {
   0% {
-    transform: translateX(100%);
+    transform: translateX(-50%);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateX(0%);
   }
 }
 
 .animate-marquee {
   display: inline-flex;
   white-space: nowrap;
-  animation: marquee 35s linear infinite;
+  animation: marquee-left-to-right 80s linear infinite;
+  will-change: transform;
 }
 
 .animate-marquee:hover {
   animation-play-state: paused;
 }
+

@@ -39,4 +39,18 @@ export interface ServerConfig {
   password: string;
   portalName: string;
   lastUpdated: string;
+  localHttpMode?: boolean;
+  localIp?: string;
+  localPort?: number;
+}
+
+export interface LocalNetworkInfo {
+  status: string;
+  protocol: 'http' | 'https';
+  port: number;
+  host: string;
+  ips: { interface: string; ip: string }[];
+  localHttpUrl: string;
+  loopbackUrl: string;
+  allUrls: string[];
 }
